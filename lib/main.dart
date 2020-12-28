@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_maker/helper/function.dart';
 import 'package:quiz_maker/services/auth.dart';
+import 'package:quiz_maker/view/home.dart';
 import 'package:quiz_maker/view/signin.dart';
 import 'package:quiz_maker/view/signup.dart';
 
@@ -11,7 +13,31 @@ Future<void> main() async {
   await Firebase.initializeApp();
   runApp(MyApp());
 }
-class MyApp extends StatelessWidget {
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  bool _isLoggedin = false;
+  @override
+  void initState() {
+    checkUserLoggedInstatus();
+    super.initState();
+    // Add code after super
+  }
+
+  checkUserLoggedInstatus() async{
+     HelperClass.getUserLoggedInDetails().then((value){
+       setState(() {
+         _isLoggedin = value;
+       });
+     });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -20,7 +46,8 @@ class MyApp extends StatelessWidget {
           create: (_) => AuthenticationService(FirebaseAuth.instance),
         ),
         StreamProvider(
-          create: (context) => context.read<AuthenticationService>().authStateChanges,
+          create: (context) =>
+              context.read<AuthenticationService>().authStateChanges,
         )
       ],
       child: MaterialApp(
@@ -30,20 +57,31 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: AuthenticationWrapper(),
+        home:(_isLoggedin ?? false) ? Home():  AuthenticationWrapper(),
       ),
     );
   }
 }
-class AuthenticationWrapper extends StatelessWidget {
+
+class AuthenticationWrapper extends StatefulWidget {
+  @override
+  _AuthenticationWrapperState createState() => _AuthenticationWrapperState();
+}
+
+class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
+
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
-      return SignUp();
+      return SignIn();
     }
-    return SignIn();
+    return SignUp();
   }
 }
-

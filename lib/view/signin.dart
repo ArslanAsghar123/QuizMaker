@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_maker/helper/function.dart';
 import 'package:quiz_maker/services/auth.dart';
 import 'package:quiz_maker/view/home.dart';
 import 'package:quiz_maker/view/quiz.dart';
@@ -29,8 +30,10 @@ class _SignInState extends State<SignIn> {
       try {
         UserCredential user = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
+        HelperClass.saveUserLoggedInDetails(isLoggedin: true);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Home()));
+
         setState(() {
           _isLoading = false;
         });

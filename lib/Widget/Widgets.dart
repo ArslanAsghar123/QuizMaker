@@ -21,18 +21,16 @@ Widget appBar(BuildContext context) {
   );
 }
 
-Widget blueButton(BuildContext context, String lable) {
+Widget blueButton({BuildContext context, String lable,}) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 16.0),
     decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(30)),
+        color: Colors.blue, borderRadius: BorderRadius.circular(30)),
     width: MediaQuery.of(context).size.width - 48,
     alignment: Alignment.center,
     child: Text(
-      'Sign Up',
+      lable,
       style: TextStyle(fontSize: 16.0, color: Colors.white),
     ),
   );
-
 }
