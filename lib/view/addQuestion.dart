@@ -14,7 +14,7 @@ class AddQuestion extends StatefulWidget {
 class _AddQuestionState extends State<AddQuestion> {
   final _formKey = GlobalKey<FormState>();
   String question, option1, option2, option3, option4;
-  DatabaseService databaseService = DatabaseService();
+  DatabaseService databaseService = new DatabaseService();
 
   bool _isLoading = false;
   uploadQuestionData(){

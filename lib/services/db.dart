@@ -4,7 +4,7 @@ class DatabaseService {
   Future<void> addQuizData(Map quizData, String quizId) async {
     // ignore: deprecated_member_use
     await Firestore.instance
-        .collection('quiz')
+        .collection("quiz")
         // ignore: deprecated_member_use
         .document(quizId)
         // ignore: deprecated_member_use
@@ -17,7 +17,8 @@ class DatabaseService {
   Future<void> addQuestionData(Map questionData, String quizId) async {
     // ignore: deprecated_member_use
     await Firestore.instance
-        .collection("Quiz")
+        .collection("quiz")
+        // ignore: deprecated_member_use
         .document(quizId)
         .collection('QNA')
         .add(questionData)
@@ -25,7 +26,10 @@ class DatabaseService {
       print(e);
     });
   }
-  getQuizData()async{
-    return await Firestore.instance.collection("Quiz").snapshots();
+
+  getQuizData() async {
+    return await Firestore.instance
+        .collection("quiz")
+        .snapshots();
   }
 }

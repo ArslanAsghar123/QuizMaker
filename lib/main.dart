@@ -21,6 +21,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  bool _isLoading = false;
+
   bool _isLoggedin = false;
   @override
   void initState() {
@@ -57,7 +59,13 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home:(_isLoggedin ?? false) ? Home():  AuthenticationWrapper(),
+        home: _isLoading
+            ? Container(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        )
+            : (_isLoggedin ?? false) ? Home():  AuthenticationWrapper(),
       ),
     );
   }
