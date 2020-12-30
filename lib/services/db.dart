@@ -28,8 +28,14 @@ class DatabaseService {
   }
 
   getQuizData() async {
+    return await Firestore.instance.collection("quiz").snapshots();
+  }
+
+  getRealQuizData(String quizId) async {
     return await Firestore.instance
         .collection("quiz")
-        .snapshots();
+        .document(quizId)
+        .collection("QNA")
+        .getDocuments();
   }
 }
