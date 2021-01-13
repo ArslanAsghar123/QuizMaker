@@ -16,7 +16,7 @@ class _SplashScreen1State extends State<SplashScreen1> {
         'Welcome In SplashScreen',
         style:  TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
       ),
-      seconds: 3,
+      seconds: 5,
       navigateAfterSeconds: Home(),
       image: Image.asset(
           'assets/loading.gif'),

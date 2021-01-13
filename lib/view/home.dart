@@ -4,6 +4,7 @@ import 'package:quiz_maker/Widget/Widgets.dart';
 import 'package:quiz_maker/services/db.dart';
 import 'package:quiz_maker/view/quiz.dart';
 import 'package:quiz_maker/view/quiz_play.dart';
+import 'package:quiz_maker/view/signin.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -55,10 +56,19 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: appBar(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         brightness: Brightness.light,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout,color: Colors.black,),
+            onPressed: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn()));
+            },
+          )
+        ],
       ),
       body: quizList(),
       floatingActionButton: FloatingActionButton(
