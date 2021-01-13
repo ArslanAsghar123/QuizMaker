@@ -7,6 +7,7 @@ import 'package:quiz_maker/services/auth.dart';
 import 'package:quiz_maker/view/home.dart';
 import 'package:quiz_maker/view/signin.dart';
 import 'package:quiz_maker/view/signup.dart';
+import 'package:quiz_maker/view/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             child: CircularProgressIndicator(),
           ),
         )
-            : (_isLoggedin ?? false) ? Home():  AuthenticationWrapper(),
+            : (_isLoggedin ?? false) ? SplashScreen1():  AuthenticationWrapper(),
       ),
     );
   }

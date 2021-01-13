@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_maker/Widget/Widgets.dart';
+import 'package:quiz_maker/view/home.dart';
+import 'package:quiz_maker/view/quiz_play.dart';
 
 
 class Result extends StatefulWidget {
@@ -26,7 +28,7 @@ class _ResultState extends State<Result> {
               SizedBox(height: 20,),
               GestureDetector(
                   onTap: (){
-                    Navigator.pop(context);
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
                   },
                   child: blueButton(context: context, lable: "Go Home"))
             ],
