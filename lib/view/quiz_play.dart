@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_maker/Widget/Widgets.dart';
 import 'package:quiz_maker/Widget/quiz_play_widget.dart';
@@ -73,29 +74,62 @@ class _QuizPlayState extends State<QuizPlay> {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0.0,
-        title: appBar(context),
+        title: Text('${appBar(context)}'),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: IconThemeData(color: Colors.black54),
         brightness: Brightness.light,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            // ignore: deprecated_member_use
-            questionSnapshot == null ? Container(child: Center(child: CircularProgressIndicator(),),):ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                // ignore: deprecated_member_use
-                itemCount: questionSnapshot.documents.length,
-                itemBuilder: (context , index){
-                  // ignore: deprecated_member_use
-                  return QuizPlayTile(questionModel:getQuestionModelFromDatasnapshot(questionSnapshot.documents[index]),
-                  index: index,);
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
 
-            })
-          ],
+                  children: [
+                    SizedBox(width: 10,),
+
+                  Chip(
+                    avatar: CircleAvatar(
+                      backgroundColor: Theme.of(context).accentColor,
+                      child: Text('0'),
+                    ),
+                    label: Text('total'),
+                  ),
+                  SizedBox(width: 10,),
+                  Chip(
+                    avatar: CircleAvatar(
+                      backgroundColor: Theme.of(context).accentColor,
+                      child: Text('0'),
+                    ),
+                    label: Text('correctAnswered'),
+                  ),
+                    Chip(
+                      avatar: CircleAvatar(
+                        backgroundColor: Theme.of(context).accentColor,
+                        child: Text('0'),
+                      ),
+                      label: Text('WrongAnswered'),
+                    )
+                ],),
+              ),
+              // ignore: deprecated_member_use
+              questionSnapshot == null ? Container(child: Center(child: CircularProgressIndicator(),),):ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  // ignore: deprecated_member_use
+                  itemCount: questionSnapshot.documents.length,
+                  itemBuilder: (context , index){
+                    // ignore: deprecated_member_use
+                    return QuizPlayTile(questionModel:getQuestionModelFromDatasnapshot(questionSnapshot.documents[index]),
+                    index: index,);
+
+              })
+            ],
+          ),
         ),
       ),
 floatingActionButton: FloatingActionButton(
@@ -128,7 +162,9 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text("Q${widget.index+1}  ${widget.questionModel.question}",style: TextStyle(
+        children: [
+
+          Text("Q${widget.index+1}  ${widget.questionModel.question}",style: TextStyle(
           fontSize: 18.0,color:Colors.black87
         ),),
         SizedBox(height: 14.0,),

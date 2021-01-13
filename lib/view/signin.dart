@@ -38,7 +38,7 @@ class _SignInState extends State<SignIn> {
           _isLoading = false;
         });
       } catch (e) {
-        print(e.message("Exaption"));
+        print(e.message("Exeption"));
       }
       // ignore: unnecessary_statements
       //context.read<AuthenticationService>().signIn;
