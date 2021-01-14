@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_maker/Widget/Widgets.dart';
@@ -41,6 +42,18 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+  Future<void> logOut() async{
+    try{
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignIn()));
+      
+
+    }catch(e){
+      print(e.message("Exeption"));
+    }
+
+  }
 
   @override
   void initState() {
@@ -65,7 +78,7 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.logout,color: Colors.black,),
             onPressed: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn()));
+               logOut();
             },
           )
         ],
