@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_maker/helper/function.dart';
 import 'package:quiz_maker/services/auth.dart';
-import 'package:quiz_maker/view/home.dart';
-import 'package:quiz_maker/view/signin.dart';
 import 'package:quiz_maker/view/signup.dart';
 import 'package:quiz_maker/view/splash_screen.dart';
 

@@ -5,6 +5,7 @@ import 'package:quiz_maker/Widget/Widgets.dart';
 import 'package:quiz_maker/Widget/quiz_play_widget.dart';
 import 'package:quiz_maker/model/question_model.dart';
 import 'package:quiz_maker/services/db.dart';
+import 'package:quiz_maker/view/home.dart';
 import 'package:quiz_maker/view/result.dart';
 
 class QuizPlay extends StatefulWidget {
@@ -65,107 +66,135 @@ class _QuizPlayState extends State<QuizPlay> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 0.0,
-        title: appBar(context),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.black54),
-        brightness: Brightness.light,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Chip(
-                      avatar: CircleAvatar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        child: Text('${total}'),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          leadingWidth: 0.0,
+          title: appBar(context),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.black54),
+          brightness: Brightness.light,
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 10,
                       ),
-                      label: Text('total'),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Chip(
-                      avatar: CircleAvatar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        child: Text("${_correct}"),
+                      Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: Text('${total}'),
+                        ),
+                        label: Text('total'),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: Text("${_correct}"),
 
+                        ),
+                        label: Text('correctAnswered'),
                       ),
-                      label: Text('correctAnswered'),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Chip(
-                      avatar: CircleAvatar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        child:  Text('${_inCorrect}'),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Theme.of(context).accentColor,
+                          child:  Text('${_inCorrect}'),
 
+                        ),
+                        label: Text('WrongAnswered'),
                       ),
-                      label: Text('WrongAnswered'),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Chip(
-                      avatar: CircleAvatar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        child:widget.quizId.isEmpty? Text('${_notAttempt}'):Text(""),
+                      SizedBox(
+                        width: 10,
                       ),
-                      label: Text('Not Attempt'),
-                    )
-                  ],
+                      Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Theme.of(context).accentColor,
+                          child:widget.quizId.isEmpty? Text('${_notAttempt}'):Text(""),
+                        ),
+                        label: Text('Not Attempt'),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              // ignore: deprecated_member_use
-              questionSnapshot == null
-                  ? Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      // ignore: deprecated_member_use
-                      itemCount: questionSnapshot.documents.length,
-                      itemBuilder: (context, index) {
+                // ignore: deprecated_member_use
+                questionSnapshot == null
+                    ? Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
                         // ignore: deprecated_member_use
-                        return QuizPlayTile(
-                          questionModel: getQuestionModelFromDatasnapshot(
-                              questionSnapshot.documents[index]),
-                          index: index,
-                        );
-                      })
-            ],
+                        itemCount: questionSnapshot.documents.length,
+                        itemBuilder: (context, index) {
+                          // ignore: deprecated_member_use
+                          return QuizPlayTile(
+                            questionModel: getQuestionModelFromDatasnapshot(
+                                questionSnapshot.documents[index]),
+                            index: index,
+                          );
+                        })
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.check),
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Result(
-                        correct: _correct,
-                        incorrect: _inCorrect,
-                        total: total,
-                      )));
-        },
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Result(
+                          correct: _correct,
+                          incorrect: _inCorrect,
+                          total: total,
+                        )));
+          },
+        ),
       ),
     );
+  }
+  Future<bool> _onWillPop() async {
+    return showDialog<bool>(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            content: Text(
+                "Are you sure you want to quit the quiz? All your progress will be lost."),
+            title: Text("Warning!"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Yes"),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              ),
+              FlatButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+            ],
+          );
+        });
   }
 }
 
@@ -315,4 +344,5 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
       ),
     );
   }
+
 }
