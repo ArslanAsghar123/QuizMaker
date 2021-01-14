@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
+
 
   AuthenticationService(this._firebaseAuth);
 
@@ -9,6 +11,7 @@ class AuthenticationService {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   Future<String> signIn({String email, String password}) async {
@@ -30,4 +33,6 @@ class AuthenticationService {
       return e.message;
     }
   }
+
+
 }

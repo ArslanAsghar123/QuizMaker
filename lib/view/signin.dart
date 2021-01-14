@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quiz_maker/helper/function.dart';
 import 'package:quiz_maker/services/auth.dart';
 import 'package:quiz_maker/view/home.dart';
@@ -16,6 +17,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   String email, password;
+  GoogleSignIn _signin = GoogleSignIn(scopes: ['email']);
 
   //9797979 AuthService authService = new AuthService;
 
@@ -44,6 +46,20 @@ class _SignInState extends State<SignIn> {
       // ignore: unnecessary_statements
       //context.read<AuthenticationService>().signIn;
 
+    }
+  }
+  Future<void> googleSignIn() async {
+    try {
+      GoogleSignInAccount account = await _signin.signIn();
+      GoogleSignInAuthentication auth = await account.authentication;
+
+      AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: auth.accessToken, idToken: auth.idToken);
+
+      // Logging In....
+      FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -126,17 +142,28 @@ class _SignInState extends State<SignIn> {
                           SizedBox(
                             height: 15.0,
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(30)),
-                            width: MediaQuery.of(context).size.width - 48,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Google SignIn',
-                              style: TextStyle(
-                                  fontSize: 16.0, color: Colors.white),
+                          GestureDetector(
+                            onTap: (){
+                              googleSignIn();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+
+                              decoration: BoxDecoration(
+                                image:  DecorationImage(
+                                  alignment: Alignment.topLeft,
+                                  image: AssetImage('assets/google_PNG19635.png'),
+                                ),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30)),
+                              width: MediaQuery.of(context).size.width - 48,
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Google SignIn',
+                                style: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey,fontWeight: FontWeight.w700,fontFamily: 'Quicksand'),
+
+                              ),
                             ),
                           ),
                           SizedBox(
